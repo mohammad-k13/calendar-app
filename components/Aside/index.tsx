@@ -6,20 +6,21 @@ import { Button } from "../ui/button";
 import useHandleDate from "@/Hook/Handle Date";
 import { useSelector } from "react-redux";
 
+//todo: write test for this component
 function Aside() {
 	const { AddDate } = useHandleDate();
-	
+
 	//todo: find a way that store don't refresh by relaoding page
 	//todo: this return snapshot of store we need the store;
+	//* the solution of above bug I think is to create store per request --> https://redux.js.org/usage/nextjs#creating-a-redux-store-per-request
 	const dateStore = useSelector((state: any) => state.dateStore);
-
 
 	const [date, setDate] = useState<Date | undefined>(new Date());
 	const [time, setTime] = useState<string>("12:00");
-	
+
 	const AddDateClickHandler = () => {
 		AddDate(date!, time);
-		console.log(dateStore)
+		console.log(dateStore);
 	};
 
 	return (
@@ -31,7 +32,9 @@ function Aside() {
 			/>
 			<Button onClick={AddDateClickHandler}>Add Date</Button>
 
-			{dateStore.map((item: any, index: number) => <p key={index}>{item.date}</p>)}
+			{dateStore.map((item: any, index: number) => (
+				<p key={index}>{item.date}</p>
+			))}
 		</aside>
 	);
 }
